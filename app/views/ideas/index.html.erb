@@ -1,0 +1,19 @@
+<h1>Ideas</h1>
+<% @ideas.each do |idea| %>
+  <%= link_to idea.title, idea_path(idea) %>
+  <% if idea.liked_by?(current_user) %>
+    <%= link_to fa_icon("heart"), idea_like_path(idea, idea.like_for(current_user)), method: :delete %>
+    <%= idea.likes.count %>
+  <% else %>
+    <%= link_to fa_icon("heart-o"), idea_likes_path(idea), method: :post %>
+    <%= idea.likes.count %>
+  <% end %>
+  <% if idea.joined_by?(current_user) %>
+    <%= link_to "Unjoin", idea_membership_path(idea, idea.join_for(current_user)), method: :delete %>
+    <%= idea.memberships.count %>
+  <% else %>
+    <%= link_to "Join", idea_memberships_path(idea), method: :post %>
+    <%= idea.memberships.count %>
+  <% end %>
+  <hr>
+<% end %>

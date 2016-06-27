@@ -1,0 +1,41 @@
+<h1><%= @idea.title %></h1>
+<%= image_tag @idea.avatar %>
+<% if flash[:notice] %>
+  <div class="flash-notice"><%= flash[:notice] %></div>
+<% elsif flash[:alert] %>
+  <div class="flash-alert"><%= flash[:alert] %></div>
+<% end %>
+<p><%= @idea.body %></p>
+<% if @idea.user_id %>
+  <p>Created by: <%= (User.find @idea.user_id).first_name %></p>
+<% end %>
+<% if @idea.user == current_user %>
+  <%= link_to "Edit", edit_idea_path(@idea) %>
+  <%= link_to "Delete", idea_path(@idea), method: :delete,
+                                              data: {confirm: "Are you sure?"} %>
+<% end %>
+<h4>Members: </h4>
+<% @idea.memberships.each do |membership| %>
+  <% member = User.find membership.user_id %>
+  <p><%= member.first_name %> <%= member.last_name %></p>
+<% end %>
+
+<h2>Comments</h2>
+<%= @idea.errors.full_messages.join(",") %>
+<%= form_tag idea_comments_path(@idea), method: :post do %>
+  <div>
+    <%= label_tag :body %>
+    <%= text_area_tag :body %>
+  </div>
+  <%= submit_tag "Comment!"%>
+<% end %>
+<hr>
+<% @idea.comments.each do |comment| %>
+  <%= comment.body %>
+  <% if comment.user == current_user || @idea.user == current_user %>
+    <%= link_to "Edit", edit_idea_comment_path(@idea, comment) %>
+    <%= link_to "Delete", idea_comment_path(@idea, comment), method: :delete,
+                                                data: {confirm: "Are you sure?"} %>
+  <% end %>
+  <hr>
+<% end %>

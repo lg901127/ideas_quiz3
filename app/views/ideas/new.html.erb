@@ -1,0 +1,20 @@
+<h1>Create a new idea</h1>
+<%= @idea.errors.full_messages.join(", ") %>
+<%= form_for @idea do |f| %>
+  <div>
+    <%= f.label :title %>
+    <%= f.text_area :title %>
+  </div>
+  <div>
+    <%= f.label :body %>
+    <%= f.text_area :body %>
+  </div>
+  <div>
+    <%= f.label :avatar %>
+    <%= f.file_field :avatar %>
+  </div>
+  <div>
+    <%#= f.collection_select :category_id, Category.all, :id, :title %>
+  </div>
+  <%= f.submit %>
+<% end %>

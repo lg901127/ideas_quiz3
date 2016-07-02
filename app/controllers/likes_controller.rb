@@ -4,6 +4,7 @@ class LikesController < ApplicationController
     if @idea.user != current_user
       like = Like.new(idea: @idea, user: current_user)
       if like.save
+        LikesMailer.like_notify(@idea)
         redirect_to idea_path(@idea), notice: "Liked!"
       else
         redirect_to idea_path(@idea), notice: "Error!"
